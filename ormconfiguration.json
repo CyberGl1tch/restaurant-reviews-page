@@ -1,0 +1,45 @@
+{
+   "production": {
+      "type": "mysql"
+   },
+   "testing": {
+      "type": "mysql",
+      "synchronize": true,
+      "dropSchema": false,
+      "logging": true,
+      "entities": [
+         "./**/*.entity.js"
+      ],
+      "migrations": [
+         "src/migration/**/*.ts"
+      ],
+      "subscribers": [
+         "src/subscriber/**/*.ts"
+      ],
+      "cli": {
+         "entitiesDir": "src/entity",
+         "migrationsDir": "src/migration",
+         "subscribersDir": "src/subscriber"
+      }
+   },
+   "development" : {
+      "type": "mysql",
+      "synchronize": true,
+      "dropSchema": false,
+      "logging": true,
+      "entities": [
+         "../**/*.entity.js"
+      ],
+      "migrations": [
+         "src/migration/**/*.ts"
+      ],
+      "subscribers": [
+         "src/subscriber/**/*.ts"
+      ],
+      "cli": {
+         "entitiesDir": "src/entity",
+         "migrationsDir": "src/migration",
+         "subscribersDir": "src/subscriber"
+      }
+   }
+}
