@@ -1,6 +1,8 @@
 import {Entity, PrimaryGeneratedColumn, Column, OneToMany, BeforeInsert} from 'typeorm';
 import {Roles} from "../Enums/Roles";
 import {Reviews} from "./Reviews.entity";
+import crypto from "crypto";
+import {Restaurant} from "./Restaurant.entity";
 
 @Entity()
 export class User {
@@ -15,6 +17,18 @@ export class User {
   email: string;
 
   @Column({
+    nullable: false,
+    unique: false
+  })
+  firstName: string;
+
+  @Column({
+    nullable: false,
+    unique: false
+  })
+  lastName: string;
+
+  @Column({
     nullable: false
   })
   password: string;
@@ -26,6 +40,12 @@ export class User {
   })
   role: Roles
 
+  @Column({
+    nullable: true,
+    unique: false
+  })
+  icon: string;
+
   @Column({type: "date"})
   registeredDate: Date;
 
@@ -33,11 +53,19 @@ export class User {
   latestLogin: Date;
 
   @OneToMany(() => Reviews, review => review.user)
-  profiles: Reviews[]
+  reviews: Reviews[]
+
+  @OneToMany(() => Restaurant, restaurant => restaurant.user)
+  restaurants: Restaurant[]
 
   @BeforeInsert()
   async registerDate(){
     this.registeredDate = new Date()
+  }
+
+  @BeforeInsert()
+  async hashPassword(){
+    this.password = crypto.createHash('sha256').update(this.password).digest('base64');
   }
 
 }

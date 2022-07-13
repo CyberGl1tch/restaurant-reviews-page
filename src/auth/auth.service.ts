@@ -1,25 +1,34 @@
-import { Injectable } from '@nestjs/common';
+import {forwardRef, Inject, Injectable} from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { GoogleUserDto } from './dto';
 import { JwtService } from '@nestjs/jwt';
 import { Tokens } from './types';
 import { use } from 'passport';
+import * as crypto from "crypto";
+import {LocalUserDto} from "./dto/userDto.dto";
+import {Roles} from "../Enums/Roles";
 
 @Injectable()
 export class AuthService {
   constructor(
-    private userService : UsersService,
-    private  jwtService: JwtService
+      @Inject(forwardRef(() => UsersService))
+      private userService : UsersService,
+      private  jwtService: JwtService
   ) {
   }
 
- async singInGoogle(user : GoogleUserDto){
+/* async singInGoogle(user : GoogleUserDto): Promise<Tokens>{
   //todo Create or find User in Db
-   let id = 1
-   console.log(user)
-   const tokens = await this.getTokens(id,user.email)
-   console.log(tokens)
+     let id = 1
+     console.log(user)
+     const tokens = await this.getTokens(id,user.email)
+     console.log(tokens)
    return tokens
+ }*/
+
+ async localLogin(user: LocalUserDto): Promise<Tokens>{
+     const tokens = await this.getTokens(user.id,user.email,user.role)
+     return tokens
  }
 
   async singInApple(){
@@ -34,11 +43,12 @@ export class AuthService {
 
   }
 
-  async getTokens(user_id: number, email: string): Promise<Tokens>{
+  async getTokens(user_id: number, email: string, role: Roles): Promise<Tokens>{
     const [accessToken,refreshToken] = await Promise.all([
       this.jwtService.signAsync({
           user_id: user_id,
-          email: email
+          email: email,
+          role: role
         },{
           secret: process.env.JWT_AT_SECRET,
           expiresIn: 60*60*24
@@ -46,19 +56,31 @@ export class AuthService {
       ),
       this.jwtService.signAsync({
           user_id: user_id,
-          email: email
-        },{
+          email: email,
+          role: role
+          },{
           secret: process.env.JWT_RT_SECRET,
           expiresIn: 60*60*24*7
         }
       )
     ]);
 
+
     return{
       access_token: accessToken,
       refresh_token: refreshToken
     }
 
+  }
+
+  async validateUser(email:string , password:string){
+      const user = await this.userService.getUserByEmail(email)
+      const passwordHash = crypto.createHash('sha256').update(password).digest('base64');
+
+      if(user && user.password === passwordHash ){
+          return user
+      }
+      return null
   }
 
 }
