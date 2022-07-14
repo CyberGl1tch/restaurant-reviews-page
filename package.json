@@ -5,6 +5,10 @@
   "author": "",
   "private": true,
   "license": "",
+  "engines" : {
+    "npm" : ">=7.0.0",
+    "node" : ">=17.0.0"
+  },
   "scripts": {
     "build": "nest build",
     "start": "node dist/main",
