@@ -6,8 +6,7 @@
   "private": true,
   "license": "",
   "engines" : {
-    "npm" : ">=7.0.0",
-    "node" : ">=16.x.x"
+    "node" : "16.x"
   },
   "scripts": {
     "build": "nest build",
