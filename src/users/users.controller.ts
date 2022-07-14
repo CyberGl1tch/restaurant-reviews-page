@@ -36,6 +36,13 @@ export class UsersController {
         return user
     }
 
+    @Get('/self')
+    async getUserInfoSelf(@GetUserIDFromSession() userId: number) {
+        let user = await this.usersService.getUser(userId)
+        delete user.password
+        return user
+    }
+    @Permission([Roles.ADMIN])
     @Get(':id')
     get(@Param('id') id: number) {
         return this.usersService.getUser(id)

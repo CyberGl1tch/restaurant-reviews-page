@@ -10,6 +10,10 @@ import {Public} from "../common/decorators";
 import {UsersService} from "../users/users.service";
 import {Roles} from "../Enums/Roles";
 import {AuthService} from "../auth/auth.service";
+import {UpdateUserDto} from "../users/dto/update-user.dto";
+import crypto from "crypto";
+import {CreateLoginUserDto} from "../users/dto/create-login-user.dto";
+import {UpdateReviewDto} from "./dto/updateReview.dto";
 
 @Injectable()
 export class ReviewsService {
@@ -49,7 +53,7 @@ export class ReviewsService {
     return review
   }
 
-  getReview(id: string): Promise<Reviews> {
+  getReview(id: number): Promise<Reviews> {
     this.error = null
 
     const review =  this.reviewsRepository
@@ -71,13 +75,34 @@ export class ReviewsService {
   }
 
 
-  updateReview(id: string, updateUserDto: ReviewDto) {
+  async updateReview(userId: number, reviewId: number, role: Roles, updateReviewDto: UpdateReviewDto) {
     this.error = null
+    const user = await this.userService.getUser(userId).catch(e=> this.error = e.message)
+    if(!user) return {
+      error: this.error ? this.error: "User not Found"
+    }
+    const review = await this.getReview(reviewId).catch(e=> this.error = e.message)
+    if(!review) return {
+      error: this.error ? this.error: "Review not Found"
+    }
+    console.log(userId)
+    console.log(review.userId)
+    if((role && role !== Roles.ADMIN) && user.id !== review.userId){
+      return {
+        error: this.error ? this.error: "You are not permitted to update this user"
+      }
+    }
 
-    return `This action updates a #${id} user`;
+    let updatedReview = await this.reviewsRepository.update({id: reviewId},updateReviewDto).catch(e=> this.error = e.message)
+    if(!updatedReview) return {
+      error: this.error ? this.error: "Review can not be updated"
+    }
+    return this.error ? {
+      error: this.error ? this.error: "Review can not be updated"
+    }: updatedReview; //todo return object with updated review
   }
 
-  async deleteReview(id: string,userId: number,role : Roles) {
+  async deleteReview(id: number,userId: number,role : Roles) {
     this.error = null
 
     const review = await this.getReview(id).catch(e=> this.error = e.message)

@@ -12,7 +12,9 @@ export class Restaurant {
     @Column({type: "int"})
     userId: number;
 
-    @Column()
+    @Column({
+        unique: true
+    })
     address: string;
 
     @Column()

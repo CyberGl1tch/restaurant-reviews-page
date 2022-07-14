@@ -34,8 +34,8 @@ export class UsersService {
     return this.authService.getTokens(createdUser.id,createdUser.email,createdUser.role)
   }
 
-  getUser(id: number) {
-    const user =  this.usersRepository
+  async getUser(id: number) {
+    const user =  await this.usersRepository
       .createQueryBuilder("user")
       .where("user.id = :userId", {userId: id})
       .getOne()

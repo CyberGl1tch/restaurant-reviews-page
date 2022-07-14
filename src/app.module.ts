@@ -14,9 +14,10 @@ import {RestaurantModule} from "./restaurant/restaurant.module";
 import {ReviewsModule} from "./reviews/reviews.module";
 import {RoleGuard} from "./common/guards/roleGuard.guard";
 import {JwtModule} from "@nestjs/jwt";
+import {ReportsModule} from "./reports/reports.module";
 
 @Module({
-    imports: [JwtModule,ReviewsModule,RestaurantModule,UsersModule, AuthModule, TypeOrmModule.forRootAsync({
+    imports: [JwtModule,ReportsModule,ReviewsModule,RestaurantModule,UsersModule, AuthModule, TypeOrmModule.forRootAsync({
         useFactory: async () => {
 
             let config = new OrmconfigModule();

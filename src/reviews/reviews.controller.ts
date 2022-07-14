@@ -17,6 +17,8 @@ import {Public} from "../common/decorators";
 import {GetUserIDFromSession} from "../common/decorators/extract-user-from-session.decorator";
 import {GetUserRoleFromSession} from "../common/decorators/extract-user-role-from-session.decorator";
 import {Roles} from "../Enums/Roles";
+import {UpdateUserDto} from "../users/dto/update-user.dto";
+import {UpdateReviewDto} from "./dto/updateReview.dto";
 
 @Controller('reviews')
 export class ReviewsController {
@@ -32,7 +34,11 @@ export class ReviewsController {
         if(!review || review["error"]){
             throw new HttpException(`${review["error"] ? review["error"] : "Something gone wrong contact administrators"}`, HttpStatus.FORBIDDEN)
         }
-        throw new HttpException("Review submitted Successfully", HttpStatus.OK)
+        return {
+            statusCode: 200,
+            message: "Review submitted Successfully",
+            review: review
+        }
     }
 
     @Get(':restaurantId/all')
@@ -41,7 +47,7 @@ export class ReviewsController {
     }
 
     @Get(':id')
-    async get(@Param('id') id: string) {
+    async get(@Param('id') id: number) {
         let review = await this.reviewsService.getReview(id)
         if(!review){
             throw new HttpException("Review Not Found", HttpStatus.NOT_FOUND)
@@ -50,18 +56,19 @@ export class ReviewsController {
     }
 
 
-/*    @Get()
-    getAllUserReviews() {
-        return this.usersService.getUsers()
-    }*/
+    @UsePipes(ValidationPipe)
+    @Patch('/update/:id')
+    async update(@GetUserIDFromSession() userId: number,@GetUserRoleFromSession() role: Roles,@Param('id') reviewId: number, @Body() updateReviewDto: UpdateReviewDto) {
+        let updateReview = await this.reviewsService.updateReview(userId,reviewId, role, updateReviewDto)
+        if(!updateReview || updateReview["error"]){
+            throw new HttpException(`${updateReview["error"] ? updateReview["error"] : "Something gone wrong contact administrators"}`, HttpStatus.FORBIDDEN)
+        }
+        throw new HttpException("Review updated Successfully", HttpStatus.OK)
+    }
 
-/*    @Patch(':id')
-    update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-        return this.usersService.updateUser(id, updateUserDto)
-    }*/
 
     @Delete(':id')
-    async delete(@Param('id') id: string,@GetUserIDFromSession() userId: number, @GetUserRoleFromSession() role: Roles) {
+    async delete(@Param('id') id: number,@GetUserIDFromSession() userId: number, @GetUserRoleFromSession() role: Roles) {
         let review = await this.reviewsService.deleteReview(id,userId,role)
         if(!review || review["error"]){
             throw new HttpException(`${review["error"] ? review["error"] : "Something gone wrong contact administrators"}`, HttpStatus.FORBIDDEN)

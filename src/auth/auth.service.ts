@@ -17,14 +17,6 @@ export class AuthService {
   ) {
   }
 
-/* async singInGoogle(user : GoogleUserDto): Promise<Tokens>{
-  //todo Create or find User in Db
-     let id = 1
-     console.log(user)
-     const tokens = await this.getTokens(id,user.email)
-     console.log(tokens)
-   return tokens
- }*/
 
  async localLogin(user: LocalUserDto): Promise<Tokens>{
      const tokens = await this.getTokens(user.id,user.email,user.role)
@@ -36,7 +28,7 @@ export class AuthService {
   }
 
   async logout(){
-
+        //invalidate session from backend blacklist refresh token
   }
 
   async refreshToken(){

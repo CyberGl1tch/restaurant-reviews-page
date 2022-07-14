@@ -3,6 +3,7 @@ import {Roles} from "../Enums/Roles";
 import {Reviews} from "./Reviews.entity";
 import crypto from "crypto";
 import {Restaurant} from "./Restaurant.entity";
+import {Report} from "./Report.entity";
 
 @Entity()
 export class User {
@@ -57,6 +58,9 @@ export class User {
 
   @OneToMany(() => Restaurant, restaurant => restaurant.user)
   restaurants: Restaurant[]
+
+  @OneToMany(() => Report, report => report.user)
+  reports: Report[]
 
   @BeforeInsert()
   async registerDate(){

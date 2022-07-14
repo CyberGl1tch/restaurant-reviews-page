@@ -17,6 +17,8 @@ import {Public} from "../common/decorators";
 import {GetUserIDFromSession} from "../common/decorators/extract-user-from-session.decorator";
 import {GetUserRoleFromSession} from "../common/decorators/extract-user-role-from-session.decorator";
 import {Roles} from "../Enums/Roles";
+import {UpdateReviewDto} from "../reviews/dto/updateReview.dto";
+import {UpdateRestaurantDto} from "./dto/UpdateRestaurant.dto";
 
 @Controller('restaurants')
 export class RestaurantController {
@@ -42,8 +44,10 @@ export class RestaurantController {
 
     @Public()
     @Get(':id')
-    get(@Param('id') id: number) {
-        return this.restaurantService.getRestaurant(id)
+    async get(@Param('id') id: number) {
+        let restaurant = await this.restaurantService.getRestaurant(id)
+        restaurant["totalStarsAvg"] = restaurant.reviews.map(review => (review.foodStars + review.starsService + review.starsHygiene + review.starsPrice)/4).reduce((partialSum, a) => partialSum + a, 0)/restaurant.reviews.length;
+        return restaurant
     }
 
     @Public()
@@ -57,16 +61,19 @@ export class RestaurantController {
         return await this.restaurantService.searchRestaurant(searchString)
     }
 
-
-/*    @Get()
-    getAllUserReviews() {
-        return this.usersService.getUsers()
-    }*/
-
-/*    @Patch(':id')
-    update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-        return this.usersService.updateUser(id, updateUserDto)
-    }*/
+    @UsePipes(ValidationPipe)
+    @Patch('/update/:id')
+    async update(@GetUserIDFromSession() userId: number,@GetUserRoleFromSession() role: Roles,@Param('id') restaurantId: number, @Body() updateRestaurantDto: UpdateRestaurantDto) {
+        let updateRestaurant = await this.restaurantService.updateRestaurant(userId,restaurantId, role, updateRestaurantDto)
+        if(!updateRestaurant || updateRestaurant["error"]){
+            throw new HttpException(`${updateRestaurant["error"] ? updateRestaurant["error"] : "Something gone wrong contact administrators"}`, HttpStatus.FORBIDDEN)
+        }
+        return {
+            statusCode: 200,
+            message: "Restaurant updated Successfully",
+            restaurant: updateRestaurant
+        }
+    }
 
     @Delete(':id')
     async delete(@Param('id') id: number,@GetUserIDFromSession() userId: number, @GetUserRoleFromSession() role: Roles) {

@@ -7,6 +7,8 @@ import {Reviews} from "../entity/Reviews.entity";
 import {Restaurant} from "../entity/Restaurant.entity";
 import {UsersService} from "../users/users.service";
 import {Roles} from "../Enums/Roles";
+import {UpdateReviewDto} from "../reviews/dto/updateReview.dto";
+import {UpdateRestaurantDto} from "./dto/UpdateRestaurant.dto";
 
 @Injectable()
 export class RestaurantService {
@@ -37,14 +39,17 @@ export class RestaurantService {
     return restaurant
   }
 
-  getRestaurant(id: number) {
+  async getRestaurant(id: number) {
     this.error = null
 
-    const restaurant =  this.restaurantRepository
+    const restaurant =  await this.restaurantRepository
         .createQueryBuilder("restaurant")
         .leftJoinAndSelect("restaurant.reviews","reviews")
+        .leftJoin("reviews.user","user")
+        .addSelect(["user.firstName","user.lastName","user.icon"])
         .where("restaurant.id = :restaurantId", {restaurantId: id})
         .getOne()
+    console.log(restaurant)
     return restaurant
   }
 
@@ -102,10 +107,36 @@ export class RestaurantService {
 
 
 
-  updateReview(id: string, updateUserDto: RestaurantDto) {
+  async updateRestaurant(userId: number, restaurantId: number, role: Roles, updateRestaurant: UpdateRestaurantDto) {
     this.error = null
+    const user = await this.userService.getUser(userId).catch(e=> this.error = e.message)
+    if(!user) return {
+      error: this.error ? this.error: "User not Found"
+    }
+    const restaurant = await this.getRestaurant(restaurantId).catch(e=> this.error = e.message)
+    const restaurantWithSameFields = await this.restaurantRepository.findOne({where:[{address: updateRestaurant.address},{name: updateRestaurant.name}]}).catch(e=> this.error = e.message)
+    if(restaurantWithSameFields){
 
-    return `This action updates a #${id} user`;
+      return {
+        error: this.error ? this.error: restaurantWithSameFields.address === updateRestaurant.address ? "Address is already in use" : "There is a restaurant with the same name"
+      }
+    }
+    if(!restaurant) return {
+      error: this.error ? this.error: "Restaurant not Found"
+    }
+    if((role && role !== Roles.ADMIN) && user.id !== restaurant.userId){
+      return {
+        error: this.error ? this.error: "You are not permitted to update this user"
+      }
+    }
+
+    let updatedRestaurant = await this.restaurantRepository.update({id: restaurantId},updateRestaurant).catch(e=> this.error = e.message)
+    if(!updatedRestaurant) return {
+      error: this.error ? this.error: "Restaurant can not be updated"
+    }
+    return this.error ? {
+      error: this.error ? this.error: "Restaurant can not be updated"
+    }: this.getRestaurant(restaurantId); //todo return object with update restaurant
   }
 
   async deleteRestaurant(id: number,userId: number,role : Roles) {
