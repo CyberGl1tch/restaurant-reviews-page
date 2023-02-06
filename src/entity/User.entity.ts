@@ -1,4 +1,4 @@
-import {Entity, PrimaryGeneratedColumn, Column, OneToMany, BeforeInsert} from 'typeorm';
+import {Entity, PrimaryGeneratedColumn, Column, OneToMany, BeforeInsert, AfterInsert} from 'typeorm';
 import {Roles} from "../Enums/Roles";
 import {Reviews} from "./Reviews.entity";
 import crypto from "crypto";
@@ -28,6 +28,20 @@ export class User {
     unique: false
   })
   lastName: string;
+
+  @Column({
+    nullable: true,
+    unique: false,
+    type: "long"
+  })
+  long: number
+
+  @Column({
+    nullable: true,
+    unique: false,
+    type: "long"
+  })
+  lat: number
 
   @Column({
     nullable: false
@@ -72,4 +86,8 @@ export class User {
     this.password = crypto.createHash('sha256').update(this.password).digest('base64');
   }
 
+  @AfterInsert()
+  async updateLatestLogin(){
+    this.latestLogin = new Date()
+  }
 }

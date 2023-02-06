@@ -76,6 +76,7 @@ export class RestaurantService {
   async getAllRestaurantsSortedByReviews() {
     this.error = null
 
+
     const restaurants =  await this.restaurantRepository
         .createQueryBuilder("restaurant")
         .innerJoin("restaurant.reviews","reviews")
@@ -114,11 +115,11 @@ export class RestaurantService {
       error: this.error ? this.error: "User not Found"
     }
     const restaurant = await this.getRestaurant(restaurantId).catch(e=> this.error = e.message)
-    const restaurantWithSameFields = await this.restaurantRepository.findOne({where:[{address: updateRestaurant.address},{name: updateRestaurant.name}]}).catch(e=> this.error = e.message)
+    const restaurantWithSameFields = await this.restaurantRepository.findOne({where:[{addressFixed: updateRestaurant.address},{name: updateRestaurant.name}]}).catch(e=> this.error = e.message)
     if(restaurantWithSameFields){
 
       return {
-        error: this.error ? this.error: restaurantWithSameFields.address === updateRestaurant.address ? "Address is already in use" : "There is a restaurant with the same name"
+        error: this.error ? this.error: restaurantWithSameFields.addressFixed === updateRestaurant.address ? "Address is already in use" : "There is a restaurant with the same name"
       }
     }
     if(!restaurant) return {

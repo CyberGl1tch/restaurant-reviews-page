@@ -19,6 +19,7 @@ import {GetUserIDFromSession} from "../common/decorators/extract-user-from-sessi
 import {GetUserRoleFromSession} from "../common/decorators/extract-user-role-from-session.decorator";
 import {Roles} from "../Enums/Roles";
 import {Permission} from "../common/decorators/roles.decorator";
+import {LocationDto} from "./dto/location.dto";
 
 @Controller('users')
 export class UsersController {
@@ -36,12 +37,26 @@ export class UsersController {
         return user
     }
 
+    @Public()
+    @Post("/getNearbyRestaurants")
+    @UsePipes(ValidationPipe)
+    async getNearbyRestaurants(@GetUserIDFromSession() userId: number,@Body() location: LocationDto) {
+        return this.usersService.getNearbyRestaurantsBasedOnLocation(location)
+    }
+
     @Get('/self')
     async getUserInfoSelf(@GetUserIDFromSession() userId: number) {
         let user = await this.usersService.getUser(userId)
         delete user.password
         return user
     }
+
+    @Get('/suggestedRestaurants')
+    async getSuggestedRestaurants(@GetUserIDFromSession() userId: number) {
+        return this.usersService.getUserSuggestedRestaurant(userId)
+    }
+
+
     @Permission([Roles.ADMIN])
     @Get(':id')
     get(@Param('id') id: number) {

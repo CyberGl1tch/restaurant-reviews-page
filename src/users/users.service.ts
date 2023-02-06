@@ -2,13 +2,16 @@ import {forwardRef, HttpException, HttpStatus, Inject, Injectable, UsePipes, Val
 import { CreateLoginUserDto } from './dto/create-login-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from '../entity/User.entity';
-import {Repository} from "typeorm";
+import {In, Repository} from "typeorm";
 import {InjectRepository} from "@nestjs/typeorm";
 import {AuthService} from "../auth/auth.service";
 import {GetUserIDFromSession} from "../common/decorators/extract-user-from-session.decorator";
 import {GetUserRoleFromSession} from "../common/decorators/extract-user-role-from-session.decorator";
 import {Roles} from "../Enums/Roles";
 import crypto from "crypto";
+import {Restaurant} from "../entity/Restaurant.entity";
+import {LocationDto} from "./dto/location.dto";
+import {calculateDistanceBetweenPoints} from "../GoogleUtils/calculateDistanceBetweenPoints";
 
 @Injectable()
 export class UsersService {
@@ -17,6 +20,9 @@ export class UsersService {
   constructor(
       @InjectRepository(User)
       private usersRepository: Repository<User>,
+
+      @InjectRepository(Restaurant)
+      private restaurantRepository: Repository<Restaurant>,
       @Inject(forwardRef(() => AuthService))
       private authService: AuthService
   ) {}
@@ -40,6 +46,45 @@ export class UsersService {
       .where("user.id = :userId", {userId: id})
       .getOne()
     return user
+
+  }
+
+  async getNearbyRestaurantsBasedOnLocation(location: LocationDto){
+    let allRestaurants = await this.restaurantRepository.find()
+    let nearbyRestaurants : Restaurant[] = null
+
+    allRestaurants.forEach(restaurant=>{
+      if(calculateDistanceBetweenPoints(location,{lat: restaurant.lat,long:restaurant.long}) < 5){
+        nearbyRestaurants.push(restaurant)
+      }
+    })
+
+    return nearbyRestaurants
+  }
+
+  async getUserSuggestedRestaurant(userId: number) {
+    let userCommentedRestaurants: User = await this.usersRepository.findOne({
+      where:{
+        id: userId
+      },
+      relations:{
+        reviews: {
+          restaurant: true,
+        }
+      }
+    })
+
+    let tags: string[] = []
+    userCommentedRestaurants.reviews.forEach(review =>{
+      tags.push(review.restaurant.category)
+    })
+
+
+    return await  this.restaurantRepository.find({
+        where:{
+          category: In(tags)
+        }
+      })
 
   }
 

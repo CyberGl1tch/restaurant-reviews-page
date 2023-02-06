@@ -15,10 +15,23 @@ export class Restaurant {
     @Column({
         unique: true
     })
-    address: string;
+    addressFixed: string;
+
+    @Column()
+    googleAddressId: string;
 
     @Column()
     image_url: string;
+
+    @Column({
+        type: "long"
+    })
+    lat: number;
+
+    @Column({
+        type: "long"
+    })
+    long: number;
 
     @Column()
     phone: string;
