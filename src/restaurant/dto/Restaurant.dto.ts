@@ -5,6 +5,13 @@ export class RestaurantDto {
 
     @IsNotEmpty({message: "Address must be specified"})
     address: string;
+    
+    @IsNotEmpty({message: "lat must be specified"})
+    lan: string;
+    
+    @IsNotEmpty({message: "lon must be specified"})
+    lon: string;
+    
     @IsNotEmpty({message: "Phone number must be specified"})
     phone: string;
 
