@@ -36,6 +36,13 @@ export class Restaurant {
     @Column()
     description: string;
 
+    
+    @Column()
+    lat: string;
+    
+    @Column()
+    lng: string;
+
     @ManyToOne(() => User,user => user.restaurants,{ onDelete: 'CASCADE' })
     user: User
 
