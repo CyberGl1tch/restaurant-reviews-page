@@ -40,6 +40,7 @@ export class Restaurant {
     @Column()
     lat: string;
     
+    
     @Column()
     lng: string;
 

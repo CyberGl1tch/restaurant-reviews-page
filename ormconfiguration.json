@@ -28,7 +28,7 @@
       "dropSchema": false,
       "logging": true,
       "entities": [
-         "../**/*.entity.js"
+         "./dist/entity/*.entity.js"
       ],
       "migrations": [
          "src/migration/**/*.ts"

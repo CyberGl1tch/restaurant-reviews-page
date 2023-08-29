@@ -43,8 +43,15 @@ export class ReviewsController {
 
     @Get(':restaurantId/all')
     getRestaurantReviews(@Param('restaurantId') restaurantId: number) {
-        return this.reviewsService.getAllReviews(restaurantId)
+        return this.reviewsService.getAllRestaurantReviews(restaurantId)
     }
+
+    
+    @Get(':id/allUserReviews')
+    getAllReviews(@Param('id') userId: number) {
+        return this.reviewsService.getAllReviews(userId)
+    }
+
 
     @Get(':id')
     async get(@Param('id') id: number) {

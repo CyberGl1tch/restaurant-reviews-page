@@ -30,6 +30,7 @@ export class Reviews {
 
     @Column()
     review: string;
+    
 
     @ManyToOne(() => User,user => user.reviews,{ onDelete: 'CASCADE' })
     user: User
