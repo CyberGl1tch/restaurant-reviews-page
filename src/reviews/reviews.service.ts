@@ -63,8 +63,24 @@ export class ReviewsService {
     return review
 
   }
-  getAllReviews(restaurantId: number) {
+
+
+  getAllReviews(userId: number): Promise<Reviews[]> {
     this.error = null
+
+    console.log(userId)
+    const reviews = this.reviewsRepository.find({
+      where:{ 
+        userId : userId
+      }
+    })
+
+    return reviews
+  }
+
+  getAllRestaurantReviews(restaurantId: number) {
+    this.error = null
+
 
     const restaurants = this.reviewsRepository
         .createQueryBuilder("review")
