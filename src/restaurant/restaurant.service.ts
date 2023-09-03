@@ -107,30 +107,30 @@ export class RestaurantService {
 
 
 
-  async updateRestaurant(userId: number, restaurantId: number, role: Roles, updateRestaurant: UpdateRestaurantDto) {
+  async updateRestaurant(userId: number, restaurantId: number, role: Roles, updateRestaurantDto: UpdateRestaurantDto) {
     this.error = null
     const user = await this.userService.getUser(userId).catch(e=> this.error = e.message)
     if(!user) return {
       error: this.error ? this.error: "User not Found"
     }
     const restaurant = await this.getRestaurant(restaurantId).catch(e=> this.error = e.message)
-    const restaurantWithSameFields = await this.restaurantRepository.findOne({where:[{address: updateRestaurant.address},{name: updateRestaurant.name}]}).catch(e=> this.error = e.message)
-    if(restaurantWithSameFields){
-
-      return {
-        error: this.error ? this.error: restaurantWithSameFields.address === updateRestaurant.address ? "Address is already in use" : "There is a restaurant with the same name"
-      }
-    }
+    // const restaurantWithSameFields = await this.restaurantRepository.findOne({where:[{address: updateRestaurantDto.address},{name: updateRestaurant.name}]}).catch(e=> this.error = e.message)
+    // if(restaurantWithSameFields){
+    //
+    //   return {
+    //     error: this.error ? this.error: restaurantWithSameFields.address === updateRestaurantDto.address ? "Address is already in use" : "There is a restaurant with the same name"
+    //   }
+    // }
     if(!restaurant) return {
       error: this.error ? this.error: "Restaurant not Found"
     }
-    if((role && role !== Roles.ADMIN) && user.id !== restaurant.userId){
+    if((role && role !== Roles.ADMIN) || user.id !== restaurant.userId){
       return {
         error: this.error ? this.error: "You are not permitted to update this user"
       }
     }
 
-    let updatedRestaurant = await this.restaurantRepository.update({id: restaurantId},updateRestaurant).catch(e=> this.error = e.message)
+    let updatedRestaurant = await this.restaurantRepository.update({id: restaurantId},updateRestaurantDto).catch(e=> this.error = e.message)
     if(!updatedRestaurant) return {
       error: this.error ? this.error: "Restaurant can not be updated"
     }

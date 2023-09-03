@@ -14,4 +14,6 @@ export class ReviewDto {
     starsPrice: number;
 
     review?: string;
+
+    image?: string
 }

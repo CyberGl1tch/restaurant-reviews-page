@@ -68,7 +68,6 @@ export class ReviewsService {
   getAllReviews(userId: number): Promise<Reviews[]> {
     this.error = null
 
-    console.log(userId)
     const reviews = this.reviewsRepository.find({
       where:{ 
         userId : userId
