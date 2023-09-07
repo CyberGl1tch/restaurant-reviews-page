@@ -124,7 +124,7 @@ export class RestaurantService {
     if(!restaurant) return {
       error: this.error ? this.error: "Restaurant not Found"
     }
-    if((role && role !== Roles.ADMIN) || user.id !== restaurant.userId){
+    if((role && role !== Roles.ADMIN) && user.id !== restaurant.userId){
       return {
         error: this.error ? this.error: "You are not permitted to update this user"
       }

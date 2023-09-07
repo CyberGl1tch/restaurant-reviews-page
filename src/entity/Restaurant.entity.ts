@@ -13,7 +13,7 @@ export class Restaurant {
     userId: number;
 
     @Column({
-        unique: true
+        unique: false
     })
     address: string;
 
