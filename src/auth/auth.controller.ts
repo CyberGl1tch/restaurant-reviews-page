@@ -8,7 +8,7 @@ import { GoogleGuard } from '../common/guards/google.guard';
 import {LocalGuard} from "../common/guards/local.guard";
 import {Request} from "express";
 import {GetLocalUser} from "../common/decorators/get-local-user.decorator";
-import {CreateLoginUserDto} from "../users/dto/create-login-user.dto";
+import {CreateLoginUserDto} from "../EndPoints/users/dto/create-login-user.dto";
 
 @Controller('auth')
 export class AuthController {

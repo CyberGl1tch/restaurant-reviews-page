@@ -14,11 +14,11 @@ import {
 import { UsersService } from './users.service';
 import { CreateLoginUserDto } from './dto/create-login-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import {Public} from "../common/decorators";
-import {GetUserIDFromSession} from "../common/decorators/extract-user-from-session.decorator";
-import {GetUserRoleFromSession} from "../common/decorators/extract-user-role-from-session.decorator";
-import {Roles} from "../Enums/Roles";
-import {Permission} from "../common/decorators/roles.decorator";
+import {Public} from "../../common/decorators";
+import {GetUserIDFromSession} from "../../common/decorators/extract-user-from-session.decorator";
+import {GetUserRoleFromSession} from "../../common/decorators/extract-user-role-from-session.decorator";
+import {Roles} from "../../Enums/Roles";
+import {Permission} from "../../common/decorators/roles.decorator";
 
 @Controller('users')
 export class UsersController {

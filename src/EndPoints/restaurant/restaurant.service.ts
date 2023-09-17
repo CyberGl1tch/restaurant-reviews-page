@@ -1,12 +1,12 @@
 import {HttpException, HttpStatus, Injectable, UsePipes, ValidationPipe} from '@nestjs/common';
 import { RestaurantDto } from './dto/Restaurant.dto';
-import { User } from '../entity/User.entity';
+import { User } from '../../entity/User.entity';
 import {Repository} from "typeorm";
 import {InjectRepository} from "@nestjs/typeorm";
-import {Reviews} from "../entity/Reviews.entity";
-import {Restaurant} from "../entity/Restaurant.entity";
+import {Reviews} from "../../entity/Reviews.entity";
+import {Restaurant} from "../../entity/Restaurant.entity";
 import {UsersService} from "../users/users.service";
-import {Roles} from "../Enums/Roles";
+import {Roles} from "../../Enums/Roles";
 import {UpdateReviewDto} from "../reviews/dto/updateReview.dto";
 import {UpdateRestaurantDto} from "./dto/UpdateRestaurant.dto";
 

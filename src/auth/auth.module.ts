@@ -1,10 +1,10 @@
 import {forwardRef, Module} from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { UsersService } from '../users/users.service';
+import { UsersService } from '../EndPoints/users/users.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AccessTokenStrategy, RefreshTokenStrategy } from './strategies';
 import { JwtModule } from '@nestjs/jwt';
-import {UsersModule} from "../users/users.module";
+import {UsersModule} from "../EndPoints/users/users.module";
 import {LocalStrategyStrategy} from "./strategies/localStrategy.strategy";
 //import { GoogleStrategy } from './strategies/google.strategy';
 

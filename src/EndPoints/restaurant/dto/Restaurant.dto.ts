@@ -1,5 +1,5 @@
 import {IsEmail, IsInt, IsNotEmpty, MinLength} from "class-validator";
-import {StoreCategories} from "../../Enums/StoreCategories";
+import {StoreCategories} from "../../../Enums/StoreCategories";
 
 export class RestaurantDto {
 

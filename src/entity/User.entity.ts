@@ -47,10 +47,15 @@ export class User {
   })
   icon: string;
 
-  @Column({type: "date"})
-  registeredDate: Date;
+  @Column({type: "date",
+    default: null,
+    nullable: true
+  })  registeredDate: Date;
 
-  @Column({type: "date"})
+  @Column({type: "date",
+  default: null,
+    nullable: true
+  })
   latestLogin: Date;
 
   @OneToMany(() => Reviews, review => review.user)

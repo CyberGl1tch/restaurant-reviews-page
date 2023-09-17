@@ -1,13 +1,13 @@
 import {forwardRef, HttpException, HttpStatus, Inject, Injectable, UsePipes, ValidationPipe} from '@nestjs/common';
 import { CreateLoginUserDto } from './dto/create-login-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from '../entity/User.entity';
+import { User } from '../../entity/User.entity';
 import {Repository} from "typeorm";
 import {InjectRepository} from "@nestjs/typeorm";
-import {AuthService} from "../auth/auth.service";
-import {GetUserIDFromSession} from "../common/decorators/extract-user-from-session.decorator";
-import {GetUserRoleFromSession} from "../common/decorators/extract-user-role-from-session.decorator";
-import {Roles} from "../Enums/Roles";
+import {AuthService} from "../../auth/auth.service";
+import {GetUserIDFromSession} from "../../common/decorators/extract-user-from-session.decorator";
+import {GetUserRoleFromSession} from "../../common/decorators/extract-user-role-from-session.decorator";
+import {Roles} from "../../Enums/Roles";
 import crypto from "crypto";
 
 @Injectable()

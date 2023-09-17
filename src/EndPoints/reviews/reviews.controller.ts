@@ -13,10 +13,10 @@ import {
 } from "@nestjs/common";
 import { ReviewsService } from './reviews.service';
 import { ReviewDto } from './dto/Review.dto';
-import {Public} from "../common/decorators";
-import {GetUserIDFromSession} from "../common/decorators/extract-user-from-session.decorator";
-import {GetUserRoleFromSession} from "../common/decorators/extract-user-role-from-session.decorator";
-import {Roles} from "../Enums/Roles";
+import {Public} from "../../common/decorators";
+import {GetUserIDFromSession} from "../../common/decorators/extract-user-from-session.decorator";
+import {GetUserRoleFromSession} from "../../common/decorators/extract-user-role-from-session.decorator";
+import {Roles} from "../../Enums/Roles";
 import {UpdateUserDto} from "../users/dto/update-user.dto";
 import {UpdateReviewDto} from "./dto/updateReview.dto";
 

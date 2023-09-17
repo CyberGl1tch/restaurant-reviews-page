@@ -1,5 +1,5 @@
 import {forwardRef, Inject, Injectable} from '@nestjs/common';
-import { UsersService } from '../users/users.service';
+import { UsersService } from '../EndPoints/users/users.service';
 import { GoogleUserDto } from './dto';
 import { JwtService } from '@nestjs/jwt';
 import { Tokens } from './types';

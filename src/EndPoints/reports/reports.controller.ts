@@ -13,12 +13,12 @@ import {
 } from "@nestjs/common";
 import { ReportsService } from './reports.service';
 import { ReportDto } from './dto/Report.dto';
-import {Public} from "../common/decorators";
-import {GetUserIDFromSession} from "../common/decorators/extract-user-from-session.decorator";
-import {GetUserRoleFromSession} from "../common/decorators/extract-user-role-from-session.decorator";
-import {Roles} from "../Enums/Roles";
-import {Permission} from "../common/decorators/roles.decorator";
-import {Report} from "../entity/Report.entity";
+import {Public} from "../../common/decorators";
+import {GetUserIDFromSession} from "../../common/decorators/extract-user-from-session.decorator";
+import {GetUserRoleFromSession} from "../../common/decorators/extract-user-role-from-session.decorator";
+import {Roles} from "../../Enums/Roles";
+import {Permission} from "../../common/decorators/roles.decorator";
+import {Report} from "../../entity/Report.entity";
 
 @Controller('reports')
 export class ReportsController {

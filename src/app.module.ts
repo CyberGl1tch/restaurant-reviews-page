@@ -5,16 +5,16 @@ import { Module } from "@nestjs/common";
 
 import { OrmconfigModule } from "./ormconfig/ormconfig.module";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { UsersController } from "./users/users.controller";
-import { UsersModule } from "./users/users.module";
+import { UsersController } from "./EndPoints/users/users.controller";
+import { UsersModule } from "./EndPoints/users/users.module";
 import { AuthController } from "./auth/auth.controller";
 import { APP_GUARD } from "@nestjs/core";
 import { AccessTokenGuard } from "./common/guards";
-import {RestaurantModule} from "./restaurant/restaurant.module";
-import {ReviewsModule} from "./reviews/reviews.module";
+import {RestaurantModule} from "./EndPoints/restaurant/restaurant.module";
+import {ReviewsModule} from "./EndPoints/reviews/reviews.module";
 import {RoleGuard} from "./common/guards/roleGuard.guard";
 import {JwtModule} from "@nestjs/jwt";
-import {ReportsModule} from "./reports/reports.module";
+import {ReportsModule} from "./EndPoints/reports/reports.module";
 
 @Module({
     imports: [JwtModule,ReportsModule,ReviewsModule,RestaurantModule,UsersModule, AuthModule, TypeOrmModule.forRootAsync({

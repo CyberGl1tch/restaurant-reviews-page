@@ -1,7 +1,7 @@
 import { PassportStrategy } from '@nestjs/passport';
 import {Strategy } from 'passport-local'
 import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
-import {UsersService} from "../../users/users.service";
+import {UsersService} from "../../EndPoints/users/users.service";
 import {AuthService} from "../auth.service";
 import {LocalUserDto} from "../dto/userDto.dto";
 
