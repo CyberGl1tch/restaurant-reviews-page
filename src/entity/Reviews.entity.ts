@@ -32,7 +32,9 @@ export class Reviews {
     review: string;
 
     
-    @Column()
+    @Column({
+        nullable: true
+    })
     image: string;
     
 

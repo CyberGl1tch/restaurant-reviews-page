@@ -32,7 +32,7 @@ export class RestaurantController {
         if(!restaurant || restaurant["error"]){
             throw new HttpException(`${restaurant["error"] ? restaurant["error"] : "Something gone wrong contact administrators"}`, HttpStatus.FORBIDDEN)
         }
-        throw new HttpException("Restaurant created Successfully", HttpStatus.OK)
+        return restaurant
     }
 
     @Public()

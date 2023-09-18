@@ -1,4 +1,4 @@
-import {IsEmail, IsInt, IsNotEmpty, MinLength} from "class-validator";
+import {IsEmail, IsInt, IsNotEmpty, IsOptional, MinLength} from "class-validator";
 
 export class ReviewDto {
     @IsNotEmpty()
@@ -15,5 +15,6 @@ export class ReviewDto {
 
     review?: string;
 
+    @IsOptional()
     image?: string
 }

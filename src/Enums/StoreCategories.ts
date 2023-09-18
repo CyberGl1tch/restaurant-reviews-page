@@ -2,5 +2,12 @@ export enum StoreCategories {
     FOOD= "FOOD",
     BRUNCH = "BRUNCH",
     STREET = "STREET",
-    COFFEE = "COFFEE"
+    COFFEE = "COFFEE",
+    ITALIAN= "ITALIAN",
+    MEDITERRANEAN = "MEDITERRANEAN",
+    GREEK_COUSINE = "GREEK_COUSINE",
+    BURGER = "BURGER",
+    SOUVLAKI = "SOUVLAKI",
+    CHINESE = "CHINESE",
+    SWEETS = "SWEETS"
 }
