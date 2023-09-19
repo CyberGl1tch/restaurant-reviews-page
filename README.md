@@ -1,6 +1,6 @@
 # Restaurant Reviews Page
 
 
-A simple BackEnd Api for a University Project
+The Backend api for orestisFoodReviews site
 
-Preview: https://restaurant.cyberglitch.me/#/
+Preview: https://restaurant-api.cyberglitch.me/
